@@ -72,7 +72,7 @@ export const App = () => {
           />
           {isListView && (
             <button onClick={() => setIsAddingPage(true)}>
-              Click to Add Page
+              Click to Add Page TEST CHANGE
             </button>
           )}
         </div>
