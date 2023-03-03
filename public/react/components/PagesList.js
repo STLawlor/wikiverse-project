@@ -3,7 +3,7 @@ import { Page } from './Page';
 
 import apiURL from '../api';
 
-export const PagesList = ({pages}) => {
+export const PagesList = ({ pages, setIsListView }) => {
   const [pageDetails, setPageDetails] = useState();
 
   async function getDetails(page) {
@@ -12,6 +12,7 @@ export const PagesList = ({pages}) => {
       const data = await (res).json();
 
       setPageDetails(data);
+      setIsListView(false);
     } catch (err) {
       console.log(err);
     }
@@ -27,7 +28,7 @@ export const PagesList = ({pages}) => {
           </div>
         )
 			}) :
-      <Page page = { pageDetails } setPageDetails = { setPageDetails }/>
+      <Page page = { pageDetails } setPageDetails = { setPageDetails } setIsListView = { setIsListView }/>
 		}
 	</>
 } 
