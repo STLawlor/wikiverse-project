@@ -3,8 +3,6 @@ import { PagesList } from "./PagesList";
 
 import apiURL from "../api";
 
-// TODO: Bug- Fix POST issue, not reaching inside submit? Syntax error?
-
 export const App = () => {
   const [pages, setPages] = useState([]);
   const [isAddingPage, setIsAddingPage] = useState(false);
