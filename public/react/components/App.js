@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PagesList } from "./PagesList";
+import { AddPage } from "./AddPage";
 
 import apiURL from "../api";
 
@@ -7,15 +8,10 @@ export const App = () => {
   const [pages, setPages] = useState([]);
   const [isAddingPage, setIsAddingPage] = useState(false);
   const [isListView, setIsListView] = useState(true);
-  const [title, setTitle] = useState();
-  const [content, setContent] = useState();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [tags, setTags] = useState();
 
   useEffect(() => {
     fetchPages();
-  }, [isListView]);
+  }, [isAddingPage, isListView]);
 
   async function fetchPages() {
     try {
@@ -24,39 +20,6 @@ export const App = () => {
       setPages(pagesData);
     } catch (err) {
       console.log("Oh no an error! ", err);
-    }
-  }
-
-  const onFormSubmit = async (e) => {
-    e.preventDefault();
-
-    // add POST
-    try {
-      const res = await fetch(`${apiURL}/wiki`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content,
-          name,
-          email,
-          tags
-        })
-      });
-      const data = await res.json();
-
-      if(res.status === 200) {
-        setTitle();
-        setContent();
-        setName();
-        setEmail();
-        setTags();
-        setIsAddingPage(false);
-      } else {
-        throw new Error('Something went wrong!')
-      }
-    } catch (err) {
-      console.log(err)
     }
   }
 
@@ -72,54 +35,13 @@ export const App = () => {
           />
           {isListView && (
             <button onClick={() => setIsAddingPage(true)}>
-              Click to Add Page TEST CHANGE
+              Click to Add Page
             </button>
           )}
         </div>
-      ) : (
-        <div>
-          <h3>Add a Page</h3>
-          <form onSubmit={ onFormSubmit }>
-            <input
-              type="text"
-              placeholder="Title"
-              onChange={(e) => setTitle(e.target.value)}
-            ></input>
-            <br />
-            <br />
-            <input
-              type="text"
-              placeholder="Article Content"
-              onChange={(e) => setContent(e.target.value)}
-            ></input>
-            <br />
-            <br />
-            <input
-              type="text"
-              placeholder="Author Name"
-              onChange={(e) => setName(e.target.value)}
-            ></input>
-            <br />
-            <br />
-            <input
-              type="email"
-              placeholder="Author Email"
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-            <br />
-            <br />
-            <input
-              type="text"
-              placeholder="Tags"
-              onChange={(e) => setTags(e.target.value)}
-            ></input>
-            <br />
-            <br />
-            <button type="submit" disabled = { email && title && content && name ? false : true }>Add Page</button>
-            <button onClick = { () => { setIsAddingPage(false) }}>Back to Wiki List</button>
-          </form>
-        </div>
-      )}
+      ) : 
+        <AddPage setIsAddingPage= { setIsAddingPage }/>
+      }
     </main>
   );
 };

@@ -3,8 +3,6 @@ import { Page } from "./Page";
 
 import apiURL from "../api";
 
-// TODO: Bug- Investigate why it does not fecthPages after delete even though isListView in useEffect dependency array
-
 export const PagesList = ({ pages, setIsListView }) => {
   const [page, setpage] = useState();
 
