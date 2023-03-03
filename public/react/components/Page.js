@@ -2,7 +2,8 @@ import React from "react";
 
 // TODO: Tidy Date Created?
 
-export const Page = ({ page, setPageDetails }) => {
+export const Page = ({ page, setPageDetails, setIsListView }) => {
+
   return (
     <>
       <h3>{ page.title }</h3>
@@ -12,7 +13,12 @@ export const Page = ({ page, setPageDetails }) => {
       {page.tags.map((tag, i) => {
         return <p key={i}>#{tag.name}</p>;
       })}
-      <button onClick = { () => setPageDetails() }>Back to Wiki List</button>
+      <button 
+        onClick = { () => {
+          setPageDetails();
+          setIsListView(true); 
+        }}
+      >Back to Wiki List</button>
     </>
   );
 };
