@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { PagesList } from "./PagesList";
 
-// import and prepend the api url to any fetch calls
 import apiURL from "../api";
+
+// TODO: Bug- Fix POST issue, not reaching inside submit? Syntax error?
 
 export const App = () => {
   const [pages, setPages] = useState([]);
@@ -13,7 +14,10 @@ export const App = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [tags, setTags] = useState();
-  // set object instead?
+
+  useEffect(() => {
+    fetchPages();
+  }, [isListView]);
 
   async function fetchPages() {
     try {
@@ -58,10 +62,6 @@ export const App = () => {
     }
   }
 
-  useEffect(() => {
-    fetchPages();
-  }, []);
-
   return (
     <main>
       <h1>WikiVerse</h1>
@@ -70,7 +70,6 @@ export const App = () => {
         <div>
           <PagesList
             pages={pages}
-            isListView={isListView}
             setIsListView={setIsListView}
           />
           {isListView && (

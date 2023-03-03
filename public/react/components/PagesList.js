@@ -1,34 +1,70 @@
-import React, { useState } from 'react';
-import { Page } from './Page';
+import React, { useState } from "react";
+import { Page } from "./Page";
 
-import apiURL from '../api';
+import apiURL from "../api";
+
+// TODO: Bug- Investigate why it does not fecthPages after delete even though isListView in useEffect dependency array
 
 export const PagesList = ({ pages, setIsListView }) => {
-  const [pageDetails, setPageDetails] = useState();
+  const [page, setpage] = useState();
 
-  async function getDetails(page) {
+  async function getpage(page) {
     try {
       const res = await fetch(`${apiURL}/wiki/${page.slug}`);
-      const data = await (res).json();
+      const data = await res.json();
 
-      setPageDetails(data);
+      setpage(data);
       setIsListView(false);
     } catch (err) {
       console.log(err);
     }
   }
 
-	return <>
-		{
-      !pageDetails ? pages.map((page, i) => {
-				return (
-          <div key = { i }>
-            <h3>{page.title}</h3>
-            <button onClick = { () => getDetails(page) }>Read Page</button>
-          </div>
-        )
-			}) :
-      <Page page = { pageDetails } setPageDetails = { setPageDetails } setIsListView = { setIsListView }/>
-		}
-	</>
-} 
+  async function onDelete(page) {
+    try {
+        const res = await fetch(`${apiURL}/wiki/${page.slug}`, {
+        method: "DELETE"
+      });
+      await res.json();
+
+      if(res.ok) {
+        setpage();
+        setIsListView(true);
+      } else {
+        throw new Error('Something went wrong!')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  return (
+    <>
+      {!page ? (
+        pages.map((page, i) => {
+          return (
+            <div key={i}>
+              <h3>{page.title}</h3>
+              <button onClick={() => getpage(page)}>Read Page</button>
+            </div>
+          );
+        })
+      ) : (
+        <div>
+          <Page
+            page={page}
+          />
+          <button
+            onClick={() => {
+              setpage();
+              setIsListView(true);
+            }}
+          >
+            Back to Wiki List
+          </button>
+          <button onClick={() => { onDelete(page) }}>Delete</button>
+        </div>
+      )}
+    </>
+  );
+};
