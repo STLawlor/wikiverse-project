@@ -25,8 +25,8 @@ export const App = () => {
     }
   }
 
-  async function onFormSubmit(e) {
-    e.prevent.default();
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
 
     // add POST
     try {
@@ -82,7 +82,7 @@ export const App = () => {
       ) : (
         <div>
           <h3>Add a Page</h3>
-          <form onSubmit={(e) => onFormSubmit(e)}>
+          <form onSubmit={ onFormSubmit }>
             <input
               type="text"
               placeholder="Title"
